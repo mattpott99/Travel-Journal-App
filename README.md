@@ -10,13 +10,21 @@ This repository contains the **M0 foundation scaffold** for an Android-only Trav
 
 ## Build in VS Code, Run with Android Studio
 1. Open this folder in **VS Code** for editing.
-2. Open **Android Studio** and install SDK + create/start an emulator.
-3. Run the connectivity preflight:
-   - `./scripts/verify-gradle-access.sh`
-4. From VS Code terminal, run:
-   - `gradle :app:assembleDebug`
-   - `gradle :app:installDebug`
-5. Launch the app on emulator/device.
+2. In Android Studio, choose **Open** and select the **project root** folder:
+   - `C:\Users\mattp\AndroidStudioProjects\TravelJournalApp`
+   - Do **not** open `...\app` directly as the project root.
+3. Install SDK + create/start an emulator.
+4. Run connectivity preflight:
+   - macOS/Linux: `./scripts/verify-gradle-access.sh`
+5. If `gradle/wrapper/gradle-wrapper.jar` is missing (to keep GitHub commits text-only), regenerate it once:
+   - macOS/Linux: `./scripts/regenerate-wrapper-jar.sh`
+   - Windows (Git Bash): `./scripts/regenerate-wrapper-jar.sh`
+6. Build from terminal using the wrapper scripts:
+   - macOS/Linux: `./gradlew :app:assembleDebug`
+   - Windows: `gradlew.bat :app:assembleDebug`
+7. Install on emulator/device:
+   - macOS/Linux: `./gradlew :app:installDebug`
+   - Windows: `gradlew.bat :app:installDebug`
 
 ## Why `assembleDebug` may fail with 403
 If Gradle reports errors like:
@@ -49,3 +57,9 @@ Fix options:
 
 ## Notes
 - This milestone intentionally excludes trip feature UI/logic, maps, cloud sync, and AI features.
+
+See `M0-IMPLEMENTATION-REPORT.md` for the required milestone completion report.
+
+
+### Why the wrapper JAR is not committed
+Some environments (including web-based commit flows) reject binary files. This repo tracks only text wrapper files and includes `./scripts/regenerate-wrapper-jar.sh` to recreate `gradle/wrapper/gradle-wrapper.jar` locally when needed.
