@@ -38,7 +38,7 @@ Fix options:
 - App shell launches with basic navigation:
   - Home screen
   - Trip Library placeholder screen
-- Layered structure under `domain/`, `data/`, and `ui/`.
+- Layered structure under `domain/`, `data/`, and `ui/`, including a domain repository contract and data repository implementation.
 - Local Room DB setup in place.
 - DB-level unique trip-name invariant via unique index `(ownerId, name)`.
 - Artifact date-required invariant reserved in domain model.

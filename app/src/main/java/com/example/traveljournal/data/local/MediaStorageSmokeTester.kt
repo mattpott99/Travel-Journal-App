@@ -1,11 +1,12 @@
 package com.example.traveljournal.data.local
 
+import com.example.traveljournal.domain.repository.MediaReferenceRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class MediaStorageSmokeTester(
     private val fileStorage: LocalFileStorage,
-    private val mediaReferenceDao: MediaReferenceDao
+    private val mediaReferenceRepository: MediaReferenceRepository
 ) {
     suspend fun run(): Result<Long> = withContext(Dispatchers.IO) {
         val path = fileStorage.writeDummyMediaFile(
@@ -13,18 +14,16 @@ class MediaStorageSmokeTester(
             contents = "travel-journal".encodeToByteArray()
         ).getOrElse { return@withContext Result.failure(it) }
 
-        val id = mediaReferenceDao.insert(
-            MediaReferenceEntity(
-                relativePath = path,
-                createdAtEpochMillis = System.currentTimeMillis()
-            )
+        val id = mediaReferenceRepository.save(
+            relativePath = path,
+            createdAtEpochMillis = System.currentTimeMillis()
         )
 
         Result.success(id)
     }
 
     suspend fun verify(id: Long): Boolean = withContext(Dispatchers.IO) {
-        val ref = mediaReferenceDao.getById(id) ?: return@withContext false
-        fileStorage.exists(ref.relativePath)
+        val path = mediaReferenceRepository.getRelativePath(id) ?: return@withContext false
+        fileStorage.exists(path)
     }
 }

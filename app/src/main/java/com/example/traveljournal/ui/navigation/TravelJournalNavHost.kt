@@ -1,6 +1,7 @@
 package com.example.traveljournal.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -13,7 +14,7 @@ import com.example.traveljournal.ui.state.AppShellViewModel
 
 @Composable
 fun TravelJournalNavHost(app: TravelJournalApplication) {
-    val state = AppShellViewModel(app).state
+    val state = remember(app) { AppShellViewModel(app).state }
     if (state is AppInitState.DbInitFailed) {
         DatabaseErrorScreen(state.message)
         return

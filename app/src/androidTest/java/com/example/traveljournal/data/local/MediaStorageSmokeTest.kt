@@ -3,6 +3,7 @@ package com.example.traveljournal.data.local
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.traveljournal.data.repository.RoomMediaReferenceRepository
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertTrue
@@ -30,14 +31,16 @@ class MediaStorageSmokeTest {
     @Test
     fun persistsReferenceAndFileAcrossReopen() = runBlocking {
         val fileStorage = LocalFileStorage(context)
-        val tester = MediaStorageSmokeTester(fileStorage, database.mediaReferenceDao())
+        val repository = RoomMediaReferenceRepository(database.mediaReferenceDao())
+        val tester = MediaStorageSmokeTester(fileStorage, repository)
 
         val id = tester.run().getOrThrow()
 
         database.close()
         database = Room.databaseBuilder(context, AppDatabase::class.java, TEST_DB_NAME).build()
 
-        val reloadedTester = MediaStorageSmokeTester(fileStorage, database.mediaReferenceDao())
+        val reloadedRepository = RoomMediaReferenceRepository(database.mediaReferenceDao())
+        val reloadedTester = MediaStorageSmokeTester(fileStorage, reloadedRepository)
         assertTrue(reloadedTester.verify(id))
     }
 
