@@ -1,0 +1,12 @@
+.gradle/
+.idea/
+local.properties
+*.iml
+build/
+app/build/
+captures/
+.externalNativeBuild/
+.cxx/
+.DS_Store
+# Keep wrapper scripts/properties in git, but avoid committing binary jar
+gradle/wrapper/gradle-wrapper.jar
