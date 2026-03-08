@@ -49,6 +49,3 @@ Fix options:
 
 ## Notes
 - This milestone intentionally excludes trip feature UI/logic, maps, cloud sync, and AI features.
-
-
-See `M0-IMPLEMENTATION-REPORT.md` for the required milestone completion report.
